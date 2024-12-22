@@ -1,17 +1,24 @@
 import os
+from groq import Groq
 import streamlit as st
 
 
-def get_response(user_query: str) -> str:
-    response = f"متاسفانه من پاسخ سوال شما را نمی‌دانم! {user_query}"
+def get_response() -> str:
+    client = Groq(api_key=st.session_state.api_key)
+
+    chat_completion = client.chat.completions.create(
+        model=model_name, messages=st.session_state.messages
+    )
+
+    response = chat_completion.choices[0].message.content
     return response
 
 
 os.system(command="cls")
 
-st.set_page_config(
-    page_title="به قسمت پشتیبانی شرکت ما خوش آمدید", page_icon=":computer:"
-)
+model_name = "llama-3.1-8b-instant"
+
+st.set_page_config(page_title="پشتیبانی شرکت ما", page_icon="👋")
 
 streamlit_style = """
 <style>
@@ -30,32 +37,38 @@ streamlit_style = """
 
 st.markdown(body=streamlit_style, unsafe_allow_html=True)
 
-st.title(body="ربات پشتیبانی داریوش تصدیقی")
+st.header(body="تیم پشتیبانی شرکت ما، در خدمت شما می‌باشد", divider="rainbow")
 
-if st.session_state.get(key="chat_history") is None:
-    st.session_state.chat_history = [
-        {
-            "role": "assistant",
-            "content": "سلام، وقت به خیر. من داریوش تصدیقی هستیم، چه کمکی می‌تونم به شما بکنم؟",
-        }
-    ]
+if "api_key" not in st.session_state:
+    st.session_state.api_key = ""
+    st.error(body="لطفا برای انجام عملیات، API Key را وارد نمایید!")
+
+if "messages" not in st.session_state:
+    message_system = {"role": "system", "content": "you are a helpful assistant."}
+    message_assistant = {
+        "role": "assistant",
+        "content": "سلام، وقت به خیر. من داریوش تصدیقی هستیم، چه کمکی می‌تونم به شما بکنم؟",
+    }
+
+    st.session_state.messages = [message_system, message_assistant]
 
 with st.sidebar:
     st.subheader(body="تنظیمات")
+    st.text_input(label="نام مدل", value=model_name)
+    st.session_state.api_key = st.text_input(label="API Key", type="password")
 
-user_query = st.chat_input(placeholder="لطفا سوال خودتان را اینجا بنویسید...")
-if user_query is not None and user_query != "":
-    response = get_response(user_query=user_query)
+if st.session_state.api_key:
+    prompt = st.chat_input(placeholder="لطفا سوال خودتان را اینجا بنویسید...")
 
-    st.session_state.chat_history.append({"role": "user", "content": user_query})
-    st.session_state.chat_history.append({"role": "assistant", "content": response})
+    if prompt:
+        st.session_state.messages.append({"role": "user", "content": prompt})
+        response = get_response()
+        st.session_state.messages.append({"role": "assistant", "content": response})
 
-# st.write(st.session_state.chat_history)
-
-for index, message in enumerate(st.session_state.chat_history):
-    if message["role"] == "user":
-        with st.chat_message(name="Human"):
-            st.write(message["content"])
-    elif message["role"] == "assistant":
-        with st.chat_message(name="AI"):
-            st.write(message["content"])
+    for index, message in enumerate(st.session_state.messages):
+        if message["role"] == "user":
+            with st.chat_message(name="Human"):
+                st.write(message["content"])
+        elif message["role"] == "assistant":
+            with st.chat_message(name="AI"):
+                st.write(message["content"])
