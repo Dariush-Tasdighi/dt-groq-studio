@@ -84,7 +84,7 @@ with st.sidebar:
     )
     st.divider()
 
-st.header(body="👋 به Chatbot ت داریوش تصدیقی خوش آمدید", divider="rainbow")
+st.header(body="👋 به Chatbot داریوش تصدیقی خوش آمدید!", divider="rainbow")
 
 if not st.session_state.model_name:
     st.error(body="لطفا برای انجام عملیات، مدل خود را انتخاب نمایید!")
