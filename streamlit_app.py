@@ -39,7 +39,7 @@ def initial_session_state() -> None:
 
         message_assistant = {
             "role": "assistant",
-            "content": "سلام، وقت به خیر. من داریوش هستیم، چه کمکی می‌تونم به شما بکنم؟",
+            "content": "سلام، وقت به خیر. من داریوش هستم، چه کمکی می‌تونم به شما بکنم؟",
         }
 
         st.session_state.messages = [message_system, message_assistant]
@@ -67,7 +67,7 @@ with st.sidebar:
     st.subheader(body="تنظیمات", divider="rainbow")
 
     st.session_state.model_name = st.radio(
-        label="مدل خود را انتخاب کنید",
+        label="لطفا مدل خود را انتخاب نمایید:",
         options=models,
         index=1,
     ).strip()
@@ -84,13 +84,13 @@ with st.sidebar:
     )
     st.divider()
 
-st.header(body="👋 به چت‌بات داریوش تصدیقی خوش آمدید", divider="rainbow")
+st.header(body="👋 به Chatbot ت داریوش تصدیقی خوش آمدید", divider="rainbow")
 
 if not st.session_state.model_name:
     st.error(body="لطفا برای انجام عملیات، مدل خود را انتخاب نمایید!")
 
 if not st.session_state.api_key:
-    st.error(body="لطفا برای انجام عملیات، API Key را وارد نمایید!")
+    st.error(body="لطفا برای انجام عملیات، API Key خود را وارد نمایید!")
 
 if st.session_state.api_key and st.session_state.model_name:
     prompt = st.chat_input(placeholder="لطفا سوال خودتان را اینجا بنویسید...")
