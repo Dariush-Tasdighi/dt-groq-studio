@@ -84,6 +84,23 @@ with st.sidebar:
     )
     st.divider()
 
+    st.caption(body="توسعه دهنده: داریوش تصدیقی")
+
+    contact = """
+<p style="direction: ltr; text-align: left;">
+📧: DariushT@Gmail.com
+<br>
+📞: +98-912-108-7461
+<br>
+🌐: <a href='https://t.me/IranianExperts'>https://t.me/IranianExperts</a>
+<br>
+Version: 1.4
+</p>
+"""
+
+    st.caption(body=contact, unsafe_allow_html=True)
+    st.divider()
+
 st.header(body="👋 به Chatbot داریوش تصدیقی خوش آمدید!", divider="rainbow")
 
 if not st.session_state.model_name:
