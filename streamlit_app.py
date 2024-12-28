@@ -4,7 +4,7 @@ import streamlit as st
 
 
 def set_page_config() -> None:
-    st.set_page_config(page_title="چت بات داریوش تصدیقی", page_icon="👋")
+    st.set_page_config(page_title="DT Chatbot", page_icon="👋", layout="wide")
 
     streamlit_style = """
     <style>
@@ -12,6 +12,15 @@ def set_page_config() -> None:
 
         html, body, p, h1, h2, h3, h4, h5, h6, input, textarea {
             font-family: 'IRANSansX', tahoma !important;
+        }
+
+        div.e121c1cl0 {
+            margin-right: 10px !important;
+        }
+
+        [role=radiogroup] {
+            direction: ltr;
+            text-align: left;
         }
 
         .block-container, section, input, textarea {
@@ -29,12 +38,12 @@ def initial_session_state() -> None:
         st.session_state.api_key = ""
 
     if "model_name" not in st.session_state:
-        st.session_state.model_name = "llama-3.3-70b-versatile"
+        st.session_state.model_name = models[0]
 
     if "messages" not in st.session_state:
         message_system = {
             "role": "system",
-            "content": "you are a helpful assistant. answer similar a human.",
+            "content": "you are a helpful assistant. Answer similar a polite human.",
         }
 
         message_assistant = {
@@ -69,18 +78,18 @@ with st.sidebar:
     st.session_state.model_name = st.radio(
         label="لطفا مدل خود را انتخاب نمایید:",
         options=models,
-        index=1,
+        index=0,
     ).strip()
     st.divider()
 
-    st.write(st.session_state.model_name)
+    st.write("مدل انتخاب شده:", st.session_state.model_name)
     st.divider()
 
     st.session_state.api_key = st.text_input(label="API Key", type="password").strip()
     st.divider()
 
     st.write(
-        "👋 دوست گرامی، شما می‌توانید در سایت https://groq.com ثبت‌نام کرده و پس از ورود، به طور کاملا رایگان، نسبت به دریافت یک کد API Key اقدام نمایید."
+        "👋 دوست گرامی، شما می‌توانید در سایت https://groq.com ثبت‌نام کرده و پس از ورود، به طور کاملا رایگان، نسبت به دریافت API Key اقدام نمایید."
     )
     st.divider()
 
@@ -88,13 +97,13 @@ with st.sidebar:
 
     contact = """
 <p style="direction: ltr; text-align: left;">
-📧: DariushT@Gmail.com
-<br>
-📞: +98-912-108-7461
-<br>
-🌐: <a href='https://t.me/IranianExperts'>https://t.me/IranianExperts</a>
-<br>
-Version: 1.4
+    Version: 1.5
+    <br>
+    📞: +98-912-108-7461
+    <br>
+    📧: DariushT@Gmail.com
+    <br>
+    🌐: <a href='https://t.me/IranianExperts'>https://t.me/IranianExperts</a>
 </p>
 """
 
